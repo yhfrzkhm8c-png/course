@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Авторский курс для детей 9–14 лет: учим использовать нейросети как помощника в учёбе, развиваем критическое мышление и цифровую гигиену. Онлайн, 16 занятий, группы до 10 человек или индивидуально.">
+    <meta name="theme-color" content="#050507">
+    <meta property="og:locale" content="ru_RU">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Коломыцев Антон Владимирович — Нейросети для школьников">
+    <meta property="og:description" content="Курс для детей 9–14 лет: ИИ как учебный ассистент, а не кнопка «сделай за меня». 16 занятий онлайн, группы до 10 или индивидуально.">
+    <meta property="og:image" content="img/me.jpg">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%23050507'/%3E%3Cpath d='M20 44V20h6l10 14 10-14h6v24h-6V30L36 44h-2L26 30v14h-6z' fill='%23F5F5F7'/%3E%3C/svg%3E">
+    <title>Коломыцев Антон Владимирович | Школа Интеллекта</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Palette: Intellectual Depth -->
+    <style>
+        :root {
+            --bg-body: #050507;
+            --bg-card: rgba(255, 255, 255, 0.05);
+            --border-subtle: rgba(255, 255, 255, 0.10);
+            --text-main: #F5F5F7;
+            --text-muted: #86868B;
+            --accent-indigo: #5E5CE6;
+            --accent-purple: #BF5AF2;
+            --accent-green: #30D158;
+            --accent-orange: #FF9F0A;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* Glass Cards */
+        .glass-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-subtle);
+            border-radius: 24px;
+        }
+
+        /* Typography */
+        .heading-hero {
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+        }
+
+        /* Logo Styles */
+        .logo-symbol {
+            width: 36px;
+            height: 36px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo-core {
+            width: 10px;
+            height: 10px;
+            background: white;
+            border-radius: 50%;
+            z-index: 10;
+            box-shadow: 0 0 10px rgba(255,255,255,0.8);
+        }
+        .logo-orbit {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 2px solid var(--accent-indigo);
+            border-radius: 50%;
+            animation: spin 10s linear infinite;
+        }
+        .logo-orbit::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: 50%;
+            width: 8px;
+            height: 8px;
+            background: var(--accent-purple);
+            border-radius: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 8px var(--accent-purple);
+        }
+
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* Custom Input */
+        .input-pro {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border-subtle);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .input-pro:focus {
+            outline: none;
+            border-color: var(--accent-indigo);
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* Neural Network Visual Container */
+        .neural-wrapper {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            background: radial-gradient(circle at center, rgba(94,92,230,0.05), transparent 70%);
+            border-radius: 50%;
+        }
+        #networkCanvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+        
+        /* Pricing Badge */
+        .price-badge {
+            background: linear-gradient(135deg, #5E5CE6, #BF5AF2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: white;
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+        
+        .discount-strike {
+            text-decoration: line-through;
+            color: var(--text-muted);
+            font-size: 0.9em;
+            margin-right: 8px;
+        }
+    
+    @media (prefers-reduced-motion: reduce) {
+        .logo-orbit { animation: none !important; }
+        * { scroll-behavior: auto !important; }
+    }
+</style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <!-- HEADER -->
+    <header class="fixed top-0 w-full z-50 border-b border-[rgba(255,255,255,0.08)] bg-[#050507]/80 backdrop-blur-xl">
+        <div class="max-w-6xl mx-auto px-6 h-16 flex justify-between items-center">
+            <!-- LOGO -->
+            <div class="flex items-center gap-3">
+                <div class="logo-symbol">
+                    <div class="logo-orbit"></div>
+                    <div class="logo-core"></div>
+                </div>
+                <div class="flex flex-col leading-none">
+                    <span class="font-bold text-sm text-white tracking-wide">КОЛОМЫЦЕВ АНТОН ВЛАДИМИРОВИЧ</span>
+                    <span class="text-[10px] text-[#86868B] uppercase tracking-wider mt-1">Образование</span>
+                </div>
+            </div>
+
+            <nav class="hidden md:flex gap-6 text-sm font-medium text-[#86868B]">
+                <button onclick="scrollToId('hero')" class="hover:text-white transition-colors">Главная</button>
+                <button onclick="scrollToId('about')" class="hover:text-white transition-colors">Методика</button>
+                <button onclick="scrollToId('program')" class="hover:text-white transition-colors">Программа</button>
+                <button onclick="scrollToId('pricing')" class="hover:text-white transition-colors">Цены</button>
+                <button onclick="scrollToId('faq')" class="hover:text-white transition-colors">Вопросы</button>
+            </nav>
+
+            <button onclick="scrollToId('contact')" 
+                    class="bg-white text-black px-6 py-2 rounded-full text-xs font-bold hover:bg-[#e5e5e5] transition-transform hover:scale-105">
+                Записать ребёнка
+            </button>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section id="hero" class="pt-32 pb-20 relative overflow-hidden">
+        <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div class="z-10">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[rgba(94,92,230,0.3)] bg-[rgba(94,92,230,0.1)] mb-8">
+                    <span class="w-2 h-2 rounded-full bg-[#30D158] animate-pulse"></span>
+                    <span class="text-[11px] font-bold text-[#5E5CE6] uppercase tracking-wider">Группы 9–14 лет</span>
+                </div>
+                <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 heading-hero">
+                    Нейросети<br>
+                    <span class="text-[#86868B]">без потери</span><br>
+                    интеллекта.
+                </h1>
+                <p class="text-[#86868B] text-lg md:text-xl mb-6 leading-relaxed max-w-xl">
+                    Авторский курс, где ребёнок учится использовать ИИ как ассистента, а не как кнопку «сделай за меня». Развиваем критическое мышление в эпоху алгоритмов.
+                </p>
+<p class="text-[#86868B] text-sm md:text-base mb-10 leading-relaxed max-w-xl">
+    <span class="text-white font-bold">Формат:</span> онлайн • 16 занятий • 60–75 минут • 1–2 раза в неделю • группа до 10 человек или индивидуально
+</p>
+
+<div class="flex flex-wrap gap-4">
+                    <button onclick="scrollToId('contact')" class="bg-[#5E5CE6] text-white px-8 py-4 rounded-full text-sm font-bold hover:bg-[#4f46e5] transition-all shadow-[0_0_25px_rgba(94,92,230,0.4)]">Забронировать место</button>
+                    <button onclick="scrollToId('program')" class="border border-[rgba(255,255,255,0.15)] text-white px-8 py-4 rounded-full text-sm font-bold hover:bg-white/5 transition-all">Изучить программу</button>
+                </div>
+            </div>
+            <div class="relative flex items-center justify-center">
+                <div class="neural-wrapper">
+                    <canvas id="networkCanvas"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AUTHOR SECTION -->
+    <section id="author" class="py-24 bg-[#050507] border-y border-[rgba(255,255,255,0.05)]">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="glass-card p-8 md:p-12 flex flex-col md:flex-row gap-12 items-center">
+                <div class="shrink-0 relative w-full md:w-1/3">
+                    <div class="aspect-[3/4] rounded-2xl overflow-hidden bg-[#111] border border-[rgba(255,255,255,0.1)] relative group">
+                        <img src="img/me.jpg" alt="Коломыцев Антон Владимирович" class="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity" onerror="this.src='https://placehold.co/600x800/121214/FFF?text=Фото+Антона+Владимировича';">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                        <div class="absolute bottom-4 left-4 text-white">
+                            <div class="font-bold text-lg"></div>
+                            <div class="text-xs text-[#86868B] uppercase"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full md:w-2/3">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Коломыцев Антон Владимирович</h2>
+                    <p class="text-[#5E5CE6] font-bold uppercase tracking-wide text-sm mb-6">Отец шестерых детей • Социальный инженер</p>
+                    <div class="space-y-6 text-[#86868B] text-lg leading-relaxed">
+                        <p class="text-white">«Я создал эту программу не как "очередной IT-кружок". Я создал её как отец, который видит, как технологии меняют наших детей.»</p>
+                        <p>Моя цель проста: дать ребенку компас. Чтобы в мире, где любой ответ можно получить за секунду, он не разучился задавать вопросы. Мы учим управлять ИИ, сохраняя человечность и здравый смысл.</p>
+                    </div>
+                    <div class="mt-8 flex gap-8 border-t border-white/5 pt-8">
+                        <div><div class="text-2xl font-bold text-white">6</div><div class="text-xs text-[#86868B] uppercase">Детей</div></div>
+                        <div><div class="text-2xl font-bold text-white">100+</div><div class="text-xs text-[#86868B] uppercase">Учеников</div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+
+    <!-- ANALYTICS -->
+    <section id="about" class="py-24 relative overflow-hidden">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div class="glass-card p-8">
+                    <div class="mb-6">
+                        <h3 class="text-xl font-bold text-white">Карта развития навыков</h3>
+                        <p class="text-sm text-[#86868B]">Чему реально учится ребенок</p>
+                    </div>
+                    <div class="relative w-full h-[300px]">
+                        <canvas id="skillsRadar"></canvas>
+                    </div>
+                </div>
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">Не просто «игры с чат-ботом»</h2>
+                    <ul class="space-y-8">
+                        <li class="flex gap-4">
+                            <div class="w-12 h-12 rounded-full bg-[#FF9F0A]/10 flex items-center justify-center text-[#FF9F0A] text-xl shrink-0">🚀</div>
+                            <div>
+                                <h4 class="text-lg font-bold text-white">Успеваемость и Свободное время</h4>
+                                <p class="text-sm text-[#86868B] mt-1">Домашка делается в 2 раза быстрее. Ребенок учится использовать ИИ, чтобы понять сложные темы, а не зубрить их.</p>
+                            </div>
+                        </li>
+                         <li class="flex gap-4">
+                            <div class="w-12 h-12 rounded-full bg-[#5E5CE6]/10 flex items-center justify-center text-[#5E5CE6] text-xl shrink-0">🛡</div>
+                            <div>
+                                <h4 class="text-lg font-bold text-white">Цифровая гигиена</h4>
+                                <p class="text-sm text-[#86868B] mt-1">Четкие границы: что можно доверять машине, а что — никогда. Защита от опасного контента.</p>
+                            </div>
+                        </li>
+                        <li class="flex gap-4">
+                            <div class="w-12 h-12 rounded-full bg-[#BF5AF2]/10 flex items-center justify-center text-[#BF5AF2] text-xl shrink-0">⚖️</div>
+                            <div>
+                                <h4 class="text-lg font-bold text-white">Фактчекинг</h4>
+                                <p class="text-sm text-[#86868B] mt-1">Превращаем поиск ошибок нейросети в игру. Развиваем критическое мышление.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROGRAM TABS -->
+    <section id="program" class="py-24 bg-[#09090b]">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="text-center mb-12">
+                <span class="text-[#5E5CE6] font-bold text-xs uppercase tracking-widest">Методика</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-white mt-2">Программа курса</h2>
+            </div>
+            <div class="flex flex-wrap justify-center gap-2 mb-10" id="tabs-nav"></div>
+            <div class="glass-card p-8 md:p-12 min-h-[300px] relative overflow-hidden transition-all">
+                <div id="tab-content" class="transition-opacity duration-300"></div>
+            </div>
+            <div class="mt-8 text-center">
+                 <a href="programma_kursa.pdf" download class="text-sm text-[#86868B] hover:text-white border-b border-[#86868B] hover:border-white transition-all pb-1 inline-block" aria-label="Скачать программу курса">Скачать подробную программу курса (PDF)</a>
+                <div class="text-[#86868B] text-xs mt-4">Формат: Онлайн (Zoom) или Офлайн • Группы до 10 человек</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRICING SECTION (NEW) -->
+    <section id="pricing" class="py-24 bg-[#050507] border-y border-[rgba(255,255,255,0.05)]">
+        <div class="max-w-6xl mx-auto px-6">
+            <h2 class="text-3xl font-bold text-white mb-4 text-center">Стоимость обучения</h2>
+            <p class="text-[#86868B] text-center mb-12 max-w-2xl mx-auto">
+                Инвестиция в будущее вашего ребенка. Выбирайте формат, который подходит именно вам.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                
+                <!-- GROUP CARD (FEATURED) -->
+                <div class="glass-card p-8 border-[#5E5CE6]/30 relative overflow-hidden transform hover:-translate-y-1 transition-all duration-300">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#5E5CE6] to-[#BF5AF2]"></div>
+                    <div class="price-badge mb-4">Рекомендуемый выбор</div>
+                    
+                    <h3 class="text-2xl font-bold text-white mb-2">Группа (6–10 детей)</h3>
+                    <p class="text-[#86868B] text-sm mb-6">Максимум внимания каждому + общение со сверстниками. Синергия идей.</p>
+                    
+                    <div class="mb-6 pb-6 border-b border-white/10">
+                        <div class="text-3xl font-bold text-white">2 500 ₽</div>
+                        <div class="text-[#86868B] text-xs uppercase mt-1">за занятие (60–75 мин)</div>
+                    </div>
+
+                    <ul class="space-y-3 mb-8 text-sm text-[#CCCCCC]">
+                        <li class="flex gap-2"><span>✅</span> Группа 6–10 человек</li>
+                        <li class="flex gap-2"><span>✅</span> 16 занятий (полный курс)</li>
+                        <li class="flex gap-2"><span>✅</span> Проверка домашних заданий</li>
+                        <li class="flex gap-2"><span>✅</span> Запись уроков</li>
+                    </ul>
+
+                    <!-- Offer Box -->
+                    <div class="bg-[#5E5CE6]/10 border border-[#5E5CE6]/20 rounded-xl p-4 mb-6">
+                        <div class="text-xs text-[#5E5CE6] font-bold uppercase mb-1">Выгода при оплате курса</div>
+                        <div class="flex items-end gap-2">
+                            <span class="discount-strike">40 000 ₽</span>
+                            <span class="text-2xl font-bold text-white">34 900 ₽</span>
+                        </div>
+                        <div class="text-[10px] text-[#86868B]">Экономия 5 100 ₽ за 16 уроков</div>
+                    </div>
+
+                    <button onclick="scrollToId('contact')" class="w-full bg-[#5E5CE6] text-white py-3 rounded-xl font-bold hover:bg-[#4f46e5] transition-colors">
+                        Выбрать этот формат
+                    </button>
+                </div>
+
+                <!-- INDIVIDUAL CARD -->
+                <div class="glass-card p-8 flex flex-col">
+                    <div class="mb-auto">
+                        <h3 class="text-2xl font-bold text-white mb-2">Индивидуально</h3>
+                        <p class="text-[#86868B] text-sm mb-6">Персональный трек обучения. Гибкий график и 100% фокус на интересах вашего ребенка.</p>
+                        
+                        <div class="mb-6 pb-6 border-b border-white/10">
+                            <div class="text-3xl font-bold text-white">5 000 ₽</div>
+                            <div class="text-[#86868B] text-xs uppercase mt-1">за занятие (60–75 мин)</div>
+                        </div>
+
+                        <ul class="space-y-3 mb-8 text-sm text-[#CCCCCC]">
+                            <li class="flex gap-2"><span>💎</span> Личный преподаватель</li>
+                            <li class="flex gap-2"><span>💎</span> Гибкое расписание</li>
+                            <li class="flex gap-2"><span>💎</span> Адаптация программы под ребенка</li>
+                            <li class="flex gap-2"><span>💎</span> Углубленная проработка проектов</li>
+                        </ul>
+                    </div>
+
+                    <button onclick="scrollToId('contact')" class="w-full border border-white/20 text-white py-3 rounded-xl font-bold hover:bg-white/5 transition-colors mt-4">
+                        Оставить заявку
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- REVIEWS SECTION -->
+    <section class="py-24">
+        <div class="max-w-6xl mx-auto px-6">
+            <h2 class="text-3xl font-bold text-white mb-12 text-center">Что говорят родители</h2>
+            <div class="relative">
+                <div class="flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory -mx-6 px-6">
+                    <div class="glass-card p-6 flex-shrink-0 w-[320px] snap-start">
+                        <div class="flex gap-1 text-[#FF9F0A] mb-3 text-sm">★★★★★</div>
+                        <p class="text-[#CCCCCC] text-sm leading-relaxed mb-4">«Сын перестал просто "залипать" в телефон. Теперь он там что-то строит, спрашивает у бота. Стал лучше понимать физику.»</p>
+                        <div class="text-white font-bold text-xs">Мария, мама Игоря (12 лет)</div>
+                    </div>
+                    <div class="glass-card p-6 flex-shrink-0 w-[320px] snap-start">
+                        <div class="flex gap-1 text-[#FF9F0A] mb-3 text-sm">★★★★★</div>
+                        <p class="text-[#CCCCCCC] text-sm leading-relaxed mb-4">«Боялась, что начнет списывать. Но Антон так подал материал, что сын теперь сам ищет ошибки у нейросети. Критическое мышление включилось!»</p>
+                        <div class="text-white font-bold text-xs">Елена, мама Артема (10 лет)</div>
+                    </div>
+                    <div class="glass-card p-6 flex-shrink-0 w-[320px] snap-start">
+                        <div class="flex gap-1 text-[#FF9F0A] mb-3 text-sm">★★★★★</div>
+                        <p class="text-[#CCCCCC] text-sm leading-relaxed mb-4">«Очень практично: ребёнок стал увереннее в программировании и сам придумывает проекты.»</p>
+                        <div class="text-white font-bold text-xs">Сергей, папа Максима (11 лет)</div>
+                    </div>
+                    <div class="glass-card p-6 flex-shrink-0 w-[320px] snap-start">
+                        <div class="flex gap-1 text-[#FF9F0A] mb-3 text-sm">★★★★★</div>
+                        <p class="text-[#CCCCCC] text-sm leading-relaxed mb-4">«Преподаватель вовлекает ребёнка, домашние задания интересные и творческие.»</p>
+                        <div class="text-white font-bold text-xs">Ольга, мама Ксении (9 лет)</div>
+                    </div>
+                    <div class="glass-card p-6 flex-shrink-0 w-[320px] snap-start">
+                        <div class="flex gap-1 text-[#FF9F0A] mb-3 text-sm">★★★★★</div>
+                        <p class="text-[#CCCCCC] text-sm leading-relaxed mb-4">«Увидела заметный прогресс в математике и логическом мышлении за пару месяцев.»</p>
+                        <div class="text-white font-bold text-xs">Наталья, мама Петра (13 лет)</div>
+                    </div>
+                    <div class="glass-card p-6 flex-shrink-0 w-[320px] snap-start">
+                        <div class="flex gap-1 text-[#FF9F0A] mb-3 text-sm">★★★★★</div>
+                        <p class="text-[#CCCCCC] text-sm leading-relaxed mb-4">«Онлайн-формат удобен, при этом куратор уделяет внимание каждому ребёнку.»</p>
+                        <div class="text-white font-bold text-xs">Дмитрий, папа Лены (12 лет)</div>
+                    </div>
+                    <div class="glass-card p-6 flex-shrink-0 w-[320px] snap-start">
+                        <div class="flex gap-1 text-[#FF9F0A] mb-3 text-sm">★★★★★</div>
+                        <p class="text-[#CCCCCC] text-sm leading-relaxed mb-4">«Ребёнок с радостью идёт на уроки — это редкость. Спасибо!»</p>
+                        <div class="text-white font-bold text-xs">Ирина, мама Антона (10 лет)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="py-24 bg-[#050507]">
+        <div class="max-w-3xl mx-auto px-6">
+            <h2 class="text-3xl font-bold text-white mb-10 text-center">Ответы на 10 важных вопросов</h2>
+            <div class="space-y-4">
+                <details class="glass-card p-5 group cursor-pointer">
+                    <summary class="flex justify-between items-center font-medium text-white list-none"><span>1. Ребёнок перестанет учиться и будет списывать?</span><span class="text-[#86868B] group-open:rotate-180 transition-transform">▼</span></summary>
+                    <p class="mt-4 text-[#86868B] text-sm border-t border-white/5 pt-4">Это миф. Мы учим использовать ИИ как репетитора. Запрос "Напиши за меня" запрещен. Запрос "Объясни мне ошибку" — поощряется.</p>
+                </details>
+                <details class="glass-card p-5 group cursor-pointer">
+                    <summary class="flex justify-between items-center font-medium text-white list-none"><span>2. Это безопасно? Личные данные?</span><span class="text-[#86868B] group-open:rotate-180 transition-transform">▼</span></summary>
+                    <p class="mt-4 text-[#86868B] text-sm border-t border-white/5 pt-4">Абсолютно. Мы не вводим ФИО, адреса или телефоны. Работаем в безопасных режимах.</p>
+                </details>
+                <details class="glass-card p-5 group cursor-pointer">
+                    <summary class="flex justify-between items-center font-medium text-white list-none"><span>3. Что если мы пропустим занятие?</span><span class="text-[#86868B] group-open:rotate-180 transition-transform">▼</span></summary>
+                    <p class="mt-4 text-[#86868B] text-sm border-t border-white/5 pt-4">Все уроки записываются. Ребенок сможет посмотреть запись. Куратор ответит на вопросы.</p>
+                </details>
+                <details class="glass-card p-5 group cursor-pointer">
+                    <summary class="flex justify-between items-center font-medium text-white list-none"><span>4. Какой нужен компьютер?</span><span class="text-[#86868B] group-open:rotate-180 transition-transform">▼</span></summary>
+                    <p class="mt-4 text-[#86868B] text-sm border-t border-white/5 pt-4">Любой ноутбук с интернетом. Планшет возможен, но менее удобен.</p>
+                </details>
+                <details class="glass-card p-5 group cursor-pointer">
+                    <summary class="flex justify-between items-center font-medium text-white list-none"><span>5. Сколько времени занимает домашка?</span><span class="text-[#86868B] group-open:rotate-180 transition-transform">▼</span></summary>
+                    <p class="mt-4 text-[#86868B] text-sm border-t border-white/5 pt-4">15–20 минут. Это творческие задания, которые дети делают с удовольствием.</p>
+                </details>
+                <details class="glass-card p-5 group cursor-pointer">
+                    <summary class="flex justify-between items-center font-medium text-white list-none"><span>6. Моему ребенку 8 или 15 лет. Можно?</span><span class="text-[#86868B] group-open:rotate-180 transition-transform">▼</span></summary>
+                    <p class="mt-4 text-[#86868B] text-sm border-t border-white/5 pt-4">Оптимизировано под 9–14 лет. Для других возрастов проводим собеседование.</p>
+                </details>
+                <details class="glass-card p-5 group cursor-pointer">
+                    <summary class="flex justify-between items-center font-medium text-white list-none"><span>7. Есть ли рассрочка?</span><span class="text-[#86868B] group-open:rotate-180 transition-transform">▼</span></summary>
+                    <p class="mt-4 text-[#86868B] text-sm border-t border-white/5 pt-4">Да, можно оплачивать частями (помодульно).</p>
+                </details>
+                <details class="glass-card p-5 group cursor-pointer">
+                    <summary class="flex justify-between items-center font-medium text-white list-none"><span>8. Какие нейросети используем?</span><span class="text-[#86868B] group-open:rotate-180 transition-transform">▼</span></summary>
+                    <p class="mt-4 text-[#86868B] text-sm border-t border-white/5 pt-4">Популярные текстовые модели и генераторы картинок в безопасном доступе.</p>
+                </details>
+                <details class="glass-card p-5 group cursor-pointer">
+                    <summary class="flex justify-between items-center font-medium text-white list-none"><span>9. Есть ли возврат денег?</span><span class="text-[#86868B] group-open:rotate-180 transition-transform">▼</span></summary>
+                    <p class="mt-4 text-[#86868B] text-sm border-t border-white/5 pt-4">Да. Если после первых двух занятий формат не подойдет — вернем деньги.</p>
+                </details>
+                <details class="glass-card p-5 group cursor-pointer">
+                    <summary class="flex justify-between items-center font-medium text-white list-none"><span>10. Какой размер групп?</span><span class="text-[#86868B] group-open:rotate-180 transition-transform">▼</span></summary>
+                    <p class="mt-4 text-[#86868B] text-sm border-t border-white/5 pt-4">Обычно 6–10 человек: хватает внимания каждому и есть общение со сверстниками.</p>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT FORM -->
+    <section id="contact" class="py-24 border-t border-[rgba(255,255,255,0.05)] bg-[#050507]">
+        <div class="max-w-5xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-16">
+            <div>
+                <h2 class="text-4xl font-bold text-white mb-6">Запишитесь на поток</h2>
+                <p class="text-[#86868B] mb-8 leading-relaxed">Напишите пару слов о вашем ребёнке. Мы свяжемся с вами, чтобы подобрать группу.</p>
+                <div class="flex items-center gap-4 text-white text-sm">
+                    <div class="w-8 h-8 rounded-full bg-[#5E5CE6]/20 flex items-center justify-center text-[#5E5CE6]">✉️</div>
+                    natan@harp.moscow
+                </div>
+            </div>
+            <form id="contact-form" class="glass-card p-8 space-y-5" data-email="nathan@harp.moscow" data-endpoint="">
+    <input type="hidden" name="lead_type" value="kids_course">
+
+    <div>
+        <label for="parent-name" class="block text-xs text-[#86868B] mb-2 uppercase tracking-wide">Ваше имя</label>
+        <input id="parent-name" name="parent_name" type="text" class="w-full p-4 rounded-xl input-pro" placeholder="Иван" autocomplete="name" required>
+    </div>
+
+    <div>
+        <label for="contact-info" class="block text-xs text-[#86868B] mb-2 uppercase tracking-wide">Телефон / Telegram</label>
+        <input id="contact-info" name="contact" type="text" class="w-full p-4 rounded-xl input-pro" placeholder="+7... или @username" autocomplete="tel" inputmode="text" required>
+    </div>
+
+    <div>
+        <label for="child-age" class="block text-xs text-[#86868B] mb-2 uppercase tracking-wide">Возраст ребёнка</label>
+        <select id="child-age" name="child_age" class="w-full p-4 rounded-xl input-pro appearance-none bg-[#09090b]" required>
+            <option value="" selected disabled>Выберите возраст</option>
+            <option value="9-10">9–10 лет</option>
+            <option value="11-12">11–12 лет</option>
+            <option value="13-14">13–14 лет</option>
+        </select>
+    </div>
+
+    <button id="contact-submit" type="submit" class="w-full bg-white text-black font-bold py-4 rounded-xl hover:bg-[#f0f0f0] transition-colors">
+        Отправить заявку
+    </button>
+
+    <p id="contact-form-status" class="text-xs text-[#86868B] hidden" aria-live="polite"></p>
+
+    <p class="text-[10px] text-[#86868B] leading-relaxed">
+        Нажимая «Отправить», вы соглашаетесь на обработку персональных данных. Пожалуйста, не пишите пароли, адрес и другие чувствительные данные.
+    </p>
+
+    <noscript>
+        <p class="text-[10px] text-[#86868B] leading-relaxed">
+            JavaScript отключён. Можно написать вручную на <a class="underline" href="mailto:nathan@harp.moscow">nathan@harp.moscow</a>.
+        </p>
+    </noscript>
+</form>
+
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="py-10 border-t border-[rgba(255,255,255,0.05)] bg-[#050507] text-center">
+        <p class="text-[#86868B] text-xs">© <span id="year"></span> Коломыцев Антон Владимирович. Все права защищены.</p>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script>
+        function scrollToId(id) { document.getElementById(id).scrollIntoView({ behavior: 'smooth' }); }
+
+function getUtmParams() {
+    const params = new URLSearchParams(window.location.search);
+    const keys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
+    const utm = {};
+    keys.forEach((k) => {
+        const v = params.get(k);
+        if (v) utm[k] = v;
+    });
+    return utm;
+}
+
+function buildMailto(to, subject, body) {
+    const enc = (s) => encodeURIComponent(String(s || ''));
+    return `mailto:${to}?subject=${enc(subject)}&body=${enc(body)}`;
+}
+document.addEventListener('DOMContentLoaded', () => {
+            
+            // 0. FOOTER YEAR
+const yearEl = document.getElementById('year');
+if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// 1. NEURAL NETWORK (disabled for reduced motion)
+const canvas = document.getElementById('networkCanvas');
+if (canvas) {
+    const wrapper = canvas.parentElement;
+    const ctx = canvas.getContext('2d');
+
+    const resize = () => {
+        canvas.width = wrapper.offsetWidth;
+        canvas.height = wrapper.offsetHeight;
+    };
+
+    resize();
+    window.addEventListener('resize', resize);
+
+    if (!reduceMotion) {
+        let width = canvas.width, height = canvas.height;
+        let particles = [];
+        let running = true;
+
+        const initParticles = () => {
+            width = canvas.width; height = canvas.height;
+            particles = [];
+            for (let i = 0; i < 40; i++) {
+                particles.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    vx: (Math.random() - 0.5) * 0.8,
+                    vy: (Math.random() - 0.5) * 0.8,
+                    size: Math.random() * 2 + 1
+                });
+            }
+        };
+
+        initParticles();
+        window.addEventListener('resize', initParticles);
+
+        const FPS = 30;
+        const frameInterval = 1000 / FPS;
+        let lastTime = 0;
+
+        const drawNetwork = (time = 0) => {
+            if (!running) return;
+
+            if (time - lastTime < frameInterval) {
+                requestAnimationFrame(drawNetwork);
+                return;
+            }
+            lastTime = time;
+
+            ctx.clearRect(0, 0, width, height);
+
+            for (let i = 0; i < particles.length; i++) {
+                const p = particles[i];
+                p.x += p.vx; p.y += p.vy;
+
+                if (p.x < 0 || p.x > width) p.vx *= -1;
+                if (p.y < 0 || p.y > height) p.vy *= -1;
+
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fillStyle = '#fff';
+                ctx.fill();
+
+                for (let j = i + 1; j < particles.length; j++) {
+                    const p2 = particles[j];
+                    const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+                    if (dist < 100) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(94, 92, 230, ${1 - dist / 100})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            requestAnimationFrame(drawNetwork);
+        };
+
+        document.addEventListener('visibilitychange', () => {
+            running = !document.hidden;
+            if (running) requestAnimationFrame(drawNetwork);
+        });
+
+        requestAnimationFrame(drawNetwork);
+    } else {
+        // Reduced motion: draw a quiet static frame so the circle isn't empty.
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const dots = 14;
+        for (let i = 0; i < dots; i++) {
+            const x = (canvas.width * (i + 1)) / (dots + 1);
+            const y = canvas.height * (0.35 + 0.3 * Math.sin(i));
+            ctx.beginPath();
+            ctx.arc(x, y, 1.6, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(245,245,247,0.8)';
+            ctx.fill();
+        }
+    }
+}
+
+// 2. CHART
+
+            const chartCanvas = document.getElementById('skillsRadar');
+            if (chartCanvas) {
+                new Chart(chartCanvas.getContext('2d'), {
+                    type: 'radar',
+                    data: {
+                        labels: ['Логика', 'Этика', 'Креативность', 'Технологии', 'Коммуникация', 'Безопасность'],
+                        datasets: [{
+                            label: 'Навыки',
+                            data: [90, 85, 80, 70, 75, 95],
+                            backgroundColor: 'rgba(94, 92, 230, 0.2)',
+                            borderColor: '#5E5CE6',
+                            pointBackgroundColor: '#fff',
+                            pointBorderColor: '#5E5CE6',
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        maintainAspectRatio: false,
+                        scales: {
+                            r: {
+                                angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
+                                grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                                pointLabels: { color: '#F5F5F7', font: { size: 11, family: 'Inter' } },
+                                ticks: { display: false }
+                            }
+                        },
+                        plugins: { legend: { display: false } }
+                    }
+                });
+            }
+
+            // 3. TABS
+            const nav = document.getElementById('tabs-nav');
+            const contentContainer = document.getElementById('tab-content');
+            
+            if (nav && contentContainer) {
+                const curriculum = [
+                    {
+                        title: "Модуль 1. Знакомство",
+                        desc: "Снимаем страх перед ИИ. Учимся формулировать запросы (промпты) и создаем первого бота-помощника.",
+                        tags: ["Промпт-инжиниринг", "Настройка помощника", "Первые запросы"]
+                    },
+                    {
+                        title: "Модуль 2. Логика",
+                        desc: "Почему ИИ врет? Разбираем механику «галлюцинаций». Учим детей не верить экрану на слово, а проверять факты.",
+                        tags: ["Поиск ошибок", "Безопасность", "Фактчекинг"]
+                    },
+                    {
+                        title: "Модуль 3. Творчество",
+                        desc: "Vibe Coding. Мы создаем настроение, а ИИ пишет код. Учимся формулировать идеи так, чтобы нейросеть превращала их в работающие прототипы игр и историй.",
+                        tags: ["Генерация идей", "Vibe Coding", "Быстрое прототипирование"]
+                    },
+                    {
+                        title: "Модуль 4. Финал",
+                        desc: "Ребенок упаковывает свою работу и презентует её группе. Развиваем навыки выступления.",
+                        tags: ["Презентация", "Ораторское искусство", "Demo Day"]
+                    }
+                ];
+
+                nav.innerHTML = ''; 
+                curriculum.forEach((mod, idx) => {
+                    const btn = document.createElement('button');
+                    btn.innerText = `Модуль ${idx + 1}`;
+                    btn.className = `px-6 py-2 rounded-full text-sm font-bold transition-all border border-transparent ${idx === 0 ? 'bg-white text-black shadow-lg' : 'bg-white/5 text-[#86868B] hover:bg-white/10'}`;
+                    
+                    btn.onclick = () => {
+                        Array.from(nav.children).forEach((b, i) => {
+                             if(i === idx) b.className = 'px-6 py-2 rounded-full text-sm font-bold transition-all bg-white text-black shadow-lg';
+                             else b.className = 'px-6 py-2 rounded-full text-sm font-bold transition-all bg-white/5 text-[#86868B] hover:bg-white/10';
+                        });
+                        renderTabContent(curriculum[idx]);
+                    };
+                    nav.appendChild(btn);
+                });
+
+                function renderTabContent(data) {
+                    contentContainer.style.opacity = 0;
+                    setTimeout(() => {
+                        contentContainer.innerHTML = `
+                            <div class="flex flex-col md:flex-row gap-8">
+                                <div class="flex-1">
+                                    <h3 class="text-2xl font-bold text-white mb-4">${data.title}</h3>
+                                    <p class="text-[#CCCCCC] text-lg leading-relaxed mb-6">${data.desc}</p>
+                                </div>
+                                <div class="w-full md:w-1/3 space-y-3">
+                                    ${data.tags.map(tag => `
+                                        <div class="bg-white/5 border border-white/5 rounded-lg p-3 flex items-center gap-3">
+                                            <span class="text-[#5E5CE6]">●</span>
+                                            <span class="text-sm text-white">${tag}</span>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        `;
+                        contentContainer.style.opacity = 1;
+                    }, 200);
+                }
+
+                renderTabContent(curriculum[0]);
+            }
+            // 4. CONTACT FORM
+            const contactForm = document.getElementById('contact-form');
+            if (contactForm) {
+                const statusEl = document.getElementById('contact-form-status');
+                const submitBtn = document.getElementById('contact-submit');
+
+                const endpoint = contactForm.dataset.endpoint || '';
+                const emailFallback = contactForm.dataset.email || 'nathan@harp.m';
+
+                const setStatus = (message, isError = false) => {
+                    if (!statusEl) return;
+                    statusEl.textContent = message;
+                    statusEl.classList.remove('hidden');
+                    statusEl.style.color = isError ? '#FF9F0A' : '#86868B';
+                };
+
+                contactForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+
+                    if (submitBtn) {
+                        submitBtn.disabled = true;
+                        submitBtn.textContent = 'Отправляем...';
+                    }
+
+                    const data = Object.fromEntries(new FormData(contactForm).entries());
+                    data.url = window.location.href;
+                    data.referrer = document.referrer || '';
+                    data.utm = getUtmParams();
+                    data.timestamp = new Date().toISOString();
+
+                    const summary =
+`Заявка: детский курс (9–14)
+Имя: ${data.parent_name || '-'}
+Контакт: ${data.contact || '-'}
+Возраст ребёнка: ${data.child_age || '-'}
+URL: ${data.url}
+Referrer: ${data.referrer}
+UTM: ${Object.keys(data.utm || {}).length ? JSON.stringify(data.utm) : '-' }`;
+
+                    // Best-effort: copy lead details to clipboard (so it never disappears into the void).
+                    try { await navigator.clipboard.writeText(summary); } catch (_) {}
+
+                    try {
+                        if (endpoint) {
+                            const res = await fetch(endpoint, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify(data)
+                            });
+                            if (!res.ok) throw new Error('Bad response');
+                            setStatus('Готово. Заявка отправлена. Мы свяжемся с вами в ближайшее время.');
+                            contactForm.reset();
+                        } else {
+                            // No backend configured: open email compose window as a working fallback.
+                            window.location.href = buildMailto(emailFallback, 'Заявка на детский курс', summary);
+                            setStatus('Открылось письмо с заявкой. Если окно не появилось, напишите на nathan@harp.moscow.');
+                        }
+                    } catch (err) {
+                        // Fallback to mailto if webhook fails
+                        window.location.href = buildMailto(emailFallback, 'Заявка на детский курс (fallback)', summary);
+                        setStatus('Не получилось отправить автоматически. Открылось письмо с заявкой (fallback).', true);
+                    } finally {
+                        if (submitBtn) {
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = 'Отправить заявку';
+                        }
+                    }
+                });
+            }
+
+        });
+    </script>
+</body>
+</html>
